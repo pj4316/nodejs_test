@@ -52,3 +52,6 @@ ArrayList<Person> array = new ArrayList<>();
 
 [1,2,3,4,5]
 => indexOf();
+
+
+ㅁㅁㅁㅁㅁㅁ
