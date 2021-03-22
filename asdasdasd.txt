@@ -1,1 +1,54 @@
-aaaaaaaaa
+컨트롤러 => 서비스 호출 => 도메인 호출
+
+서비스
+
+도메인(DAO + 비즈니스 로직) - 리포지토리(도메인 찾는 것)
+
+private final UserService userService;
+public ApiResponse<List<UserDto>> getUsers( Request filter) {
+	return userService.getUsers(filter);
+}
+
+public ApiResponse<UserDto> getUsers(Request filter) {
+	return new ApiResponse(userService.getUser(filter));
+}
+
+
+// 성별이 여자, 나이가 20살 이상, ... 
+
+// 나이, 성별, 이름, ....
+public class UserService {
+
+	private final UserRepository userRepository;
+	public List<UserDto> getUsers(Filter filter) {
+		return userRepository.findByFilter(filter)   // List<User>
+		stream().				   // Stream<User>
+		map(this::toUserDto).		   // Stream<UserDto>
+		collect(Collectors.toList()).;		   // List<UserDto>
+	}
+
+	public UserDto getUser(Filter filter) {
+		return this.toUserDto(userRepository.findOneByFilter(filter));
+	}
+}
+
+
+public class ApiResponse<T,E,V,S> {
+	
+	@Nullable;
+	private final T data;
+
+	@Nullable
+	private final string errorMessage;
+
+	public ApiResponse(T data) {
+		this.data = data;
+		errorMessage = null;
+	}
+}
+
+ArrayList<Integer> array = new ArrayList<>();
+ArrayList<Person> array = new ArrayList<>();
+
+[1,2,3,4,5]
+=> indexOf();
